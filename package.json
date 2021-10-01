@@ -1,0 +1,23 @@
+{
+  "name": "bog_project1",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ljones315/bog_project1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ljones315/bog_project1/issues"
+  },
+  "homepage": "https://github.com/ljones315/bog_project1#readme",
+  "dependencies": {
+    "node-fetch": "^3.0.0"
+  }
+}
