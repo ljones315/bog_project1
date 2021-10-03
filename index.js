@@ -12,7 +12,7 @@ inputField.addEventListener("keypress", (e) => {
     }
 })
 
-
+//add event listener for getting info
 function getInfo(ref) {
     fetch(`${baseURL}pokemon/${ref}`)
     .then((res) => {
