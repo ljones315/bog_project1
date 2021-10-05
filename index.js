@@ -1,17 +1,43 @@
 const baseURL = "https://pokeapi.co/api/v2/";
 //import fetch from 'node-fetch';
 var inputField = document.getElementById('inputField');
-var infoScreen = document.getElementById('info');  
+var infoScreen = document.getElementById('info');
+var stats = document.getElementsByClassName('stats')[0];  
 var input = 'pikachu';
 var current;
 var currID;
 var image = document.getElementById('sprite');
+var infoType = document.getElementById('infoType');
 
 inputField.addEventListener("keypress", (e) => {
     if (e.key == "Enter") {
         input = inputField.value;
         getInfo(input)
     }
+})
+
+document.getElementsByClassName("infoButton")[0].addEventListener("click", () => {
+    getInfo(inputField.value)
+    });
+
+document.getElementsByClassName("movesButton")[0].addEventListener("click", () => {
+    getMoves()
+    });
+
+document.getElementsByClassName("locationButton")[0].addEventListener("click", () => {
+    getLocation()
+    });
+
+document.getElementsByClassName("evolutionButton")[0].addEventListener("click", () => {
+    getEvolution()
+    });
+
+document.getElementById("next").addEventListener("click", () => {
+    getNext();
+})
+
+document.getElementById("prev").addEventListener("click", () => {
+    getPrev();
 })
 
 //add event listener for getting info
@@ -38,20 +64,24 @@ function getInfo(ref) {
 function errorMessage() {
     clearScreen();
     image.src = "error.png";
-    let error = document.createElement('h2');
-    error.appendChild(document.createTextNode("Invalid!"));
-    infoScreen.appendChild(error);
+    infoType.innerHTML = "INVALID"
 }
 
 function clearScreen() {
+    infoType.innerHTML = "";
     while (infoScreen.firstChild) {
         infoScreen.removeChild(infoScreen.firstChild);
+    }
+    if (stats.children.length == 3) {
+        stats.removeChild(stats.lastChild);
     }
 }
 
 function getStats(pokemon) {
     clearScreen();
-    
+
+    infoType.innerHTML = "INFO";
+
     let height = document.createElement('li');
     height.appendChild(document.createTextNode("height: " + pokemon.height));
     infoScreen.appendChild(height);
@@ -76,15 +106,22 @@ function getImage(pokemon) {
 
 //add event listener for moves button
 function getMoves() {
+    clearScreen();
+    infoType.innerHTML = "MOVES";
+
     let moves = current.moves
     moves.forEach(move => {
-        //modify html
-        console.log(move.move)
+        let entry = document.createElement('li');
+        entry.appendChild(document.createTextNode(move.move.name));
+        infoScreen.appendChild(entry);
     })
 }
 
 //add event listener for moves button
 function getLocation() {
+    clearScreen();
+    infoType.innerHTML = "LOCATIONS";
+
     let locationUrl = current.location_area_encounters;
 
     fetch(locationUrl)
@@ -92,10 +129,18 @@ function getLocation() {
         return res.json()
       })
     .then((locations) => {
-        locations.forEach(location => {
-            //modify html
-            console.log(location.location_area.name);
-        })
+        if (locations.length == 0) {
+            let entry = document.createElement('h5');
+            entry.appendChild(document.createTextNode("Cannot be caught in the wild"));
+            entry.style = "text-align: center"
+            stats.appendChild(entry);
+        } else {
+            locations.forEach(location => {
+                let entry = document.createElement('li');
+                entry.appendChild(document.createTextNode(location.location_area.name));
+                infoScreen.appendChild(entry);
+            })
+        }
     })
 }
 
@@ -124,7 +169,7 @@ function getEvolution() {
     })
 }
 
-//add listener for arrow
+
 function getNext() {
     if (currID != 151) {
         currID++;

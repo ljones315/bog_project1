@@ -1,5 +1,5 @@
-#stats {
-  background-color: green;
+html {
+  height: 100%;
 }
 
 #sprite {
@@ -10,9 +10,17 @@
 .stats {
   overflow: auto;
   background-color: green;
-  width: 200px;
+  width: 250px;
   height: 200px;
   border: none;
+}
+
+#info {
+  list-style-type: circle;
+}
+
+#infoType {
+  text-align: center;
 }
 
 .arrow {
