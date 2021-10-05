@@ -3,7 +3,7 @@ const baseURL = "https://pokeapi.co/api/v2/";
 var inputField = document.getElementById('inputField');
 var infoScreen = document.getElementById('info');
 var stats = document.getElementsByClassName('stats')[0];  
-var input = 'pikachu';
+var input;
 var current;
 var currID;
 var image = document.getElementById('sprite');
@@ -11,13 +11,13 @@ var infoType = document.getElementById('infoType');
 
 inputField.addEventListener("keypress", (e) => {
     if (e.key == "Enter") {
-        input = inputField.value;
-        getInfo(input)
+        input = inputField.value.toLowerCase();
+        getPokemon(input)
     }
 })
 
 document.getElementsByClassName("infoButton")[0].addEventListener("click", () => {
-    getInfo(inputField.value)
+    getInfo()
     });
 
 document.getElementsByClassName("movesButton")[0].addEventListener("click", () => {
@@ -40,8 +40,11 @@ document.getElementById("prev").addEventListener("click", () => {
     getPrev();
 })
 
-//add event listener for getting info
-function getInfo(ref) {
+//Makes call to API that returns a pokemon object
+//If successful, calls getImage() and getStats() 
+//also sets current/currID to the current pokemon object and its id #
+//If any error occurs, errorMessage() is called
+function getPokemon(ref) {
     fetch(`${baseURL}pokemon/${ref}`)
     .then((res) => {
       return res.json()
@@ -51,24 +54,28 @@ function getInfo(ref) {
             errorMessage();
         } else {
             clearScreen();
-            getImage(pokemon);
-            getStats(pokemon);
             current = pokemon;
             currID = pokemon.id;
+            getInfo();
         }
     }).catch(() => {
         errorMessage();
     })
 }
 
+//Displays error image on image screen
+//Displays "INVALID" on info screen
 function errorMessage() {
     clearScreen();
     image.src = "error.png";
-    infoType.innerHTML = "INVALID"
+    infoType.innerHTML = "INVALID";
+    inputField.style = "border: 2px solid red";
 }
 
+//Wipes the info screen before adding new info
 function clearScreen() {
     infoType.innerHTML = "";
+    inputField.style = "border: 2px solid green";
     while (infoScreen.firstChild) {
         infoScreen.removeChild(infoScreen.firstChild);
     }
@@ -77,6 +84,15 @@ function clearScreen() {
     }
 }
 
+//basically a handler method
+function getInfo() {
+    getStats(current);
+    getImage(current);
+    inputField.value = current.name.toUpperCase();
+}
+
+//Displays a pokemon's info (weight, height, stats) on the info screen
+//on button click or by default (enter on search bar)
 function getStats(pokemon) {
     clearScreen();
 
@@ -99,12 +115,13 @@ function getStats(pokemon) {
     })
 }
 
+//Displays an image of the pokemon on the image screen
 function getImage(pokemon) {
     let imgUrl = pokemon.sprites.front_default;
     image.src=imgUrl;
 }
 
-//add event listener for moves button
+//Displays pokemon's moves on info screen (on button click)
 function getMoves() {
     clearScreen();
     infoType.innerHTML = "MOVES";
@@ -146,6 +163,9 @@ function getLocation() {
 
 //add event listener for evolution button
 function getEvolution() {
+    clearScreen();
+    infoType.innerHTML = "EVOLUTION";
+
     let speciesUrl = current.species.url;
     fetch(speciesUrl)
     .then((res) => {
@@ -160,11 +180,14 @@ function getEvolution() {
         .then((chain) => {
             var stage = chain.chain;
             while(stage.evolves_to.length != 0) {
-                //modify html
-                console.log(stage.species.name)
+                let entry = document.createElement('li');
+                entry.appendChild(document.createTextNode(stage.species.name));
+                infoScreen.appendChild(entry);
                 stage = stage.evolves_to[0];
             }
-            console.log(stage.species.name)
+            let entry = document.createElement('li');
+            entry.appendChild(document.createTextNode(stage.species.name));
+            infoScreen.appendChild(entry);
         })
     })
 }
@@ -176,7 +199,7 @@ function getNext() {
     } else {
         currID = 1;
     }
-    getInfo(currID);
+    getPokemon(currID);
 }
 
 //add listener for arrow
@@ -186,5 +209,5 @@ function getPrev() {
     } else {
         currID = 151;
     }
-    getInfo(currID);
+    getPokemon(currID);
 }
