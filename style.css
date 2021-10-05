@@ -1,3 +1,16 @@
 #stats {
   background-color: green;
 }
+
+#sprite {
+  width: 100px;
+  height: 100px;
+}
+
+.stats {
+  overflow: auto;
+  background-color: green;
+  width: 200px;
+  height: 200px;
+  border: none;
+}
