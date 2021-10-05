@@ -14,3 +14,43 @@
   height: 200px;
   border: none;
 }
+
+.arrow {
+  margin: auto;
+  display: inline-block;
+  border: solid gray;
+  border-width: 0 3px 3px 0;
+  padding: 3px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.flex-container1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.flex-container2 {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: stretch;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 150px;
+}
+
+.flex-container3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}

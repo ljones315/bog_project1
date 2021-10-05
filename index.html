@@ -6,10 +6,44 @@
   </head>
   <body>
     <div class="fullBody">
-      <img src="" alt="image to be placed here" id="sprite" />
+      
+      <div class="flex-container1">
+        <img src="" alt="image to be placed here" id="sprite"/>
+        <div class="stats">
+          <ul id="info"></ul>
+        </div>
+      </div>
+      
+      <div class="flex-container2">
+        <div class="infoButton">
+          <button type="button">Info</button>
+        </div>
+        <div class="movesButton">
+          <button type="button">Moves</button>
+        </div>
+        <div class="locationButton">
+          <button type="button">Location</button>
+        </div>
+        <div class="evolutionButton">
+          <button type="button">Evolution</button>
+        </div>
+      </div>
+
       <input type="text" placeholder="Enter name or ID" id="inputField" />
-      <div class="stats">
-        <ul id="info"></ul>
+      
+      <div class="flex-container3">
+        <div class="normalButton">
+          <button type="button">Normal</button>
+        </div>
+        <div class="noneButton">
+          <button type="button">None</button>
+        </div>
+        <div class = "leftButton">
+          <button type="button"><i class="arrow left"></i></button>
+        </div>
+        <div class = "rightButton">
+          <button type="button"><i class="arrow right"></i></button>
+        </div>
       </div>
       <script type="module" src="index.js"></script>
     </div>
