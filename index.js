@@ -1,9 +1,11 @@
-const baseURL = "https://pokeapi.co/api/v2/"
+const baseURL = "https://pokeapi.co/api/v2/";
 //import fetch from 'node-fetch';
-var inputField = document.getElementById('inputField')
+var inputField = document.getElementById('inputField');
+var infoScreen = document.getElementById('info');  
 var input = 'pikachu';
 var current;
 var currID;
+var image = document.getElementById('sprite');
 
 inputField.addEventListener("keypress", (e) => {
     if (e.key == "Enter") {
@@ -20,19 +22,56 @@ function getInfo(ref) {
     })
     .then((pokemon) =>{ 
         if (pokemon == null) {
-            //set info to warning message
-            console.log("he don't exist")
+            errorMessage();
         } else {
+            clearScreen();
+            getImage(pokemon);
+            getStats(pokemon);
             current = pokemon;
             currID = pokemon.id;
-            console.log(pokemon)
-            let stats = pokemon.stats;
-            stats.forEach((stat) => {
-                //modify html
-                //console.log(stat)
-            }) 
         }
+    }).catch(() => {
+        errorMessage();
     })
+}
+
+function errorMessage() {
+    clearScreen();
+    image.src = "error.png";
+    let error = document.createElement('h2');
+    error.appendChild(document.createTextNode("Invalid!"));
+    infoScreen.appendChild(error);
+}
+
+function clearScreen() {
+    while (infoScreen.firstChild) {
+        infoScreen.removeChild(infoScreen.firstChild);
+    }
+}
+
+function getStats(pokemon) {
+    clearScreen();
+    
+    let height = document.createElement('li');
+    height.appendChild(document.createTextNode("height: " + pokemon.height));
+    infoScreen.appendChild(height);
+
+    let weight = document.createElement('li');
+    weight.appendChild(document.createTextNode("weight: " + pokemon.weight));
+    infoScreen.appendChild(weight);
+
+    let stats = pokemon.stats;
+
+    stats.forEach((stat) => {
+        let entry = document.createElement('li');
+        entry.appendChild(document.createTextNode(stat.stat.name + ": " + stat.base_stat));
+        infoScreen.appendChild(entry);
+    })
+}
+
+function getImage(pokemon) {
+    let imgUrl = pokemon.sprites.front_default;
+    image.src=imgUrl;
 }
 
 //add event listener for moves button
@@ -60,7 +99,7 @@ function getLocation() {
     })
 }
 
-//add event listener for moves button
+//add event listener for evolution button
 function getEvolution() {
     let speciesUrl = current.species.url;
     fetch(speciesUrl)
@@ -104,4 +143,3 @@ function getPrev() {
     }
     getInfo(currID);
 }
-
