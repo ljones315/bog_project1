@@ -7,6 +7,7 @@ var input;
 var current;
 var currID = 0;
 var image = document.getElementById('sprite');
+var imageScreen = document.getElementsByClassName('img-container')[0];
 var infoType = document.getElementById('infoType');
 var type1 = document.getElementById('t1');
 var type2 = document.getElementById('t2');
@@ -69,7 +70,7 @@ function getPokemon(ref) {
 //Displays "INVALID" on info screen
 function errorMessage() {
     clearScreen();
-    image.src = "error.png";
+    image.src = "images/error.png";
     infoType.innerHTML = "DOES NOT EXIST";
     inputField.style = "border: 2px solid red";
 }
@@ -88,6 +89,7 @@ function clearScreen() {
 
 //basically a handler method
 function getInfo() {
+    toggleImage('info');
     getStats();
     getImage();
     getTypes();
@@ -139,6 +141,7 @@ function getTypes() {
 
 //Displays pokemon's moves on info screen (on button click)
 function getMoves() {
+    toggleImage('moves');
     clearScreen();
     infoType.innerHTML = "MOVES";
 
@@ -152,6 +155,7 @@ function getMoves() {
 
 //add event listener for moves button
 function getLocation() {
+    toggleImage('loc');
     clearScreen();
     infoType.innerHTML = "LOCATIONS";
 
@@ -177,9 +181,11 @@ function getLocation() {
     })
 }
 
-//add event listener for evolution button
+//gets evolution chain and displays names on infoScreen, calls setEvoImage
 function getEvolution() {
     clearScreen();
+    toggleImage('evo');
+
     infoType.innerHTML = "EVOLUTION";
 
     let speciesUrl = current.species.url;
@@ -195,20 +201,64 @@ function getEvolution() {
         })
         .then((chain) => {
             var stage = chain.chain;
-            while(stage.evolves_to.length != 0) {
+            while(stage.evolves_to[0] != undefined) {
                 let entry = document.createElement('li');
                 entry.appendChild(document.createTextNode(stage.species.name));
+                setEvoImage(stage.species.name, false);
                 infoScreen.appendChild(entry);
                 stage = stage.evolves_to[0];
             }
             let entry = document.createElement('li');
             entry.appendChild(document.createTextNode(stage.species.name));
+            setEvoImage(stage.species.name, true);
             infoScreen.appendChild(entry);
         })
     })
 }
 
+//creates a chain pokemon images that represent an evo chain
+function setEvoImage(name, last) {
+    fetch(`${baseURL}pokemon/${name}`)
+    .then((res) => {
+      return res.json()
+    })
+    .then((pokemon) =>{ 
+        if (pokemon == null) {
+            errorMessage();
+        } else {
+            let sprite = pokemon.sprites.front_default;
+            let img = document.createElement('img');
+            img.style.width = "93px";
+            img.style.height = "93px";
+            img.src = sprite;
+            imageScreen.appendChild(img);
 
+            if (!last) {
+            let arrow = document.createElement('img');
+            arrow.src = "images/arrow.png";
+            arrow.style.width = "10px";
+            arrow.style.height = "10px";
+            imageScreen.appendChild(arrow);
+            }
+        }
+    }).catch(() => {
+        errorMessage();
+    })
+}
+
+//turns feature image/evo chain image on/off
+function toggleImage(origin) {
+    if (origin == 'info' || origin == 'loc' || origin == 'moves') {
+        image.style.display = "flex";
+    } else {
+        image.style.display = "none"; 
+    }
+    while (imageScreen.children.length > 1) {
+        imageScreen.removeChild(imageScreen.lastChild);
+    }
+}
+
+//gets next pokemon (by id)
 function getNext() {
     if (currID != 151) {
         currID++;
@@ -218,7 +268,7 @@ function getNext() {
     getPokemon(currID);
 }
 
-//add listener for arrow
+//gets prev pokemon (by id)
 function getPrev() {
     if (currID != 1) {
         currID--;
@@ -228,9 +278,9 @@ function getPrev() {
     getPokemon(currID);
 }
 
-
+//A map of hex colors to their matching types (found this online lol)
 var typeColors = {
-    normal : "A8A77A",
+normal : "A8A77A",
 fire :  "EE8130",
 water :  "6390F0",
 electric :  "F7D02C",
