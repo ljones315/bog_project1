@@ -60,6 +60,13 @@ html {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
+  padding: 10% 0 1% 0;
+}
+
+button {
+  width: 75px;
+  color: black;
+  background-color: white;
 }
 
 .flex-container2 {
@@ -76,4 +83,26 @@ html {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
+  flex-direction: column;
+}
+
+.fullBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input-container {
+  display: flex;
+}
+
+.types {
+  display: flex;
+  flex-direction: row;
+}
+
+.arrows {
+  display: flex;
+  flex-direction: row;
 }

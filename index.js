@@ -5,9 +5,11 @@ var infoScreen = document.getElementById('info');
 var stats = document.getElementsByClassName('stats')[0];  
 var input;
 var current;
-var currID;
+var currID = 0;
 var image = document.getElementById('sprite');
 var infoType = document.getElementById('infoType');
+var type1 = document.getElementById('t1');
+var type2 = document.getElementById('t2');
 
 inputField.addEventListener("keypress", (e) => {
     if (e.key == "Enter") {
@@ -68,7 +70,7 @@ function getPokemon(ref) {
 function errorMessage() {
     clearScreen();
     image.src = "error.png";
-    infoType.innerHTML = "INVALID";
+    infoType.innerHTML = "DOES NOT EXIST";
     inputField.style = "border: 2px solid red";
 }
 
@@ -86,27 +88,28 @@ function clearScreen() {
 
 //basically a handler method
 function getInfo() {
-    getStats(current);
-    getImage(current);
+    getStats();
+    getImage();
+    getTypes();
     inputField.value = current.name.toUpperCase();
 }
 
 //Displays a pokemon's info (weight, height, stats) on the info screen
 //on button click or by default (enter on search bar)
-function getStats(pokemon) {
+function getStats() {
     clearScreen();
 
     infoType.innerHTML = "INFO";
 
     let height = document.createElement('li');
-    height.appendChild(document.createTextNode("height: " + pokemon.height));
+    height.appendChild(document.createTextNode("height: " + current.height));
     infoScreen.appendChild(height);
 
     let weight = document.createElement('li');
-    weight.appendChild(document.createTextNode("weight: " + pokemon.weight));
+    weight.appendChild(document.createTextNode("weight: " + current.weight));
     infoScreen.appendChild(weight);
 
-    let stats = pokemon.stats;
+    let stats = current.stats;
 
     stats.forEach((stat) => {
         let entry = document.createElement('li');
@@ -116,9 +119,22 @@ function getStats(pokemon) {
 }
 
 //Displays an image of the pokemon on the image screen
-function getImage(pokemon) {
-    let imgUrl = pokemon.sprites.front_default;
+function getImage() {
+    let imgUrl = current.sprites.front_default;
     image.src=imgUrl;
+}
+
+//Displays types on the type bar
+function getTypes() {
+    let types = current.types;
+    if (types[0]) {
+        type1.innerHTML = types[0].type.name;
+        type1.style = "background-color: #" + typeColors[types[0].type.name];
+    }
+    if (types[1]) {
+        type2.innerHTML = types[1].type.name;
+        type2.style = "background-color: #" + typeColors[types[1].type.name];
+    }
 }
 
 //Displays pokemon's moves on info screen (on button click)
@@ -210,4 +226,26 @@ function getPrev() {
         currID = 151;
     }
     getPokemon(currID);
+}
+
+
+var typeColors = {
+    normal : "A8A77A",
+fire :  "EE8130",
+water :  "6390F0",
+electric :  "F7D02C",
+grass :  "7AC74C",
+ice :  "96D9D6",
+fighting :  "C22E28",
+poison :  "A33EA1",
+ground :  "E2BF65",
+flying :  "A98FF3",
+psychic :  "F95587",
+bug :  "A6B91A",
+rock :  "B6A136",
+ghost :  "735797",
+dragon :  "6F35FC",
+dark :  "705746",
+steel :  "B7B7CE",
+fairy :  "D685AD",
 }

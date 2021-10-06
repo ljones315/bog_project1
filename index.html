@@ -21,38 +21,48 @@
         </div>
       </div>
 
-      <div class="flex-container2">
-        <div class="infoButton">
-          <button type="button">Info</button>
+      <div class="input-container">
+        <div class="flex-container2">
+          <div class="infoButton">
+            <button type="button">Info</button>
+          </div>
+          <div class="movesButton">
+            <button type="button">Moves</button>
+          </div>
+          <div class="locationButton">
+            <button type="button">Locations</button>
+          </div>
+          <div class="evolutionButton">
+            <button type="button">Evolution</button>
+          </div>
         </div>
-        <div class="movesButton">
-          <button type="button">Moves</button>
-        </div>
-        <div class="locationButton">
-          <button type="button">Location</button>
-        </div>
-        <div class="evolutionButton">
-          <button type="button">Evolution</button>
+
+        <input type="text" placeholder="Enter name or ID" id="inputField" />
+
+        <div class="flex-container3">
+          <div class="types">
+            <div class="normalButton">
+              <button type="button" id="t1" disabled>Normal</button>
+            </div>
+            <div class="noneButton">
+              <button type="button" id="t2" disabled>None</button>
+            </div>
+          </div>
+          <div class="arrows">
+            <div class="leftButton">
+              <button type="button" id="next">
+                <i class="arrow left"></i>
+              </button>
+            </div>
+            <div class="rightButton">
+              <button type="button" id="prev">
+                <i class="arrow right"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-
-      <input type="text" placeholder="Enter name or ID" id="inputField" />
-
-      <div class="flex-container3">
-        <div class="normalButton">
-          <button type="button">Normal</button>
-        </div>
-        <div class="noneButton">
-          <button type="button">None</button>
-        </div>
-        <div class="leftButton">
-          <button type="button" id="next"><i class="arrow left"></i></button>
-        </div>
-        <div class="rightButton">
-          <button type="button" id="prev"><i class="arrow right"></i></button>
-        </div>
-      </div>
-      <script type="module" src="index.js"></script>
     </div>
+    <script type="module" src="index.js"></script>
   </body>
 </html>
