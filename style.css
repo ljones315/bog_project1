@@ -6,7 +6,7 @@ html {
 }
 
 body {
-  background-color:#b02626;
+  background-color: #b02626;
 }
 
 .img-container {
@@ -15,6 +15,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  background-color: white;
 }
 
 #sprite {

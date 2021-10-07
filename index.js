@@ -19,6 +19,14 @@ inputField.addEventListener("keypress", (e) => {
     }
 })
 
+document.addEventListener("keydown", (e) => {
+        if (e.key == "ArrowLeft") {
+            getPrev();
+        } else if (e.key == "ArrowRight") {
+            getNext();
+        }
+})
+
 document.getElementsByClassName("infoButton")[0].addEventListener("click", () => {
     getInfo()
     });
@@ -260,7 +268,7 @@ function toggleImage(origin) {
 
 //gets next pokemon (by id)
 function getNext() {
-    if (currID != 151) {
+    if (currID != undefined && currID != 151) {
         currID++;
     } else {
         currID = 1;
@@ -270,7 +278,7 @@ function getNext() {
 
 //gets prev pokemon (by id)
 function getPrev() {
-    if (currID != 1) {
+    if (currID != undefined && currID != 1) {
         currID--;
     } else {
         currID = 151;
